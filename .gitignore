@@ -1,1 +1,9 @@
 tags
+
+# Editor
+*.swp
+*.un~
+
+# others
+*.rar
+*.zip
