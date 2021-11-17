@@ -1,5 +1,8 @@
 tags
 
+#binary files
+*.out
+
 # Editor
 *.swp
 *.un~
