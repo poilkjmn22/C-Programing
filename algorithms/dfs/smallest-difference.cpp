@@ -26,7 +26,7 @@ struct tile {
   int perm[MAX_N];
   int count;
   bool used[MAX_N];
-  int diff = MAX_N;
+  int diff;
   P parts;
 };
 
@@ -128,6 +128,7 @@ tile * loadSampleInputs() {
     }
     if(regex_match(s, patternDigits)) {
       tileTmp = new tile;
+      tileTmp->diff = MAX_N;
       for(int i = 0;i < s.length(); i++) {
         if(' ' != s[i]) {
           tileTmp->digits += s[i];

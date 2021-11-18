@@ -25,7 +25,7 @@ struct tile {
   int N;
   int M;
   char tiles[MAX_N][MAX_M + 1];
-  int reachableCount = 0;
+  int reachableCount;
 };
 
 using namespace std;
@@ -105,6 +105,7 @@ tile * loadSampleInputs() {
       tileTmp = new tile;
       tileTmp->N = stringToInt(result[2]);
       tileTmp->M = stringToInt(result[1]);
+      tileTmp->reachableCount  = 0;
       N = 0;
     }
   }
