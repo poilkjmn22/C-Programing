@@ -4,6 +4,7 @@
  * @LastEditors: fangqi
  * @LastEditTime: 2021-11-17 11:33:30
  * @Description: POJ-2718
+ * @O(n): n! * n
  * @Copyright(c) 2021 CMIM Network Co.,Ltd. All Rights Reserve
  */
 
@@ -18,16 +19,19 @@ using namespace std;
 
 const int MAX_N = 100000000;
 
+typedef pair<int, int> P;
+
 struct tile {
   string digits;
   int perm[MAX_N];
   int count;
   bool used[MAX_N];
   int diff = MAX_N;
+  P parts;
 };
 
 void processPerm(int, tile *);
-int partialPerm(int, int, int *, char *);
+P partialPerm(int, int, int *, char *);
 void permutation1(int, int, tile *);
 int stringToInt(string);
 void printPerm(int *, int, char *);
@@ -42,13 +46,15 @@ int main() {
     print_tile(tiles + i);
 
     permutation1(0, (*(tiles + i)).digits.length(), tiles + i);
-    cout << "Output: " << (*(tiles + i)).diff << endl << endl;
+    cout << "Output: " << (*(tiles + i)).diff 
+      << "(" << tiles[i].parts.first << ", " << tiles[i].parts.second << ")" << endl
+      << endl;
   }
 
   return 0;
 }
 
-int partialPerm(int n, int p, int * perm, string digits) {
+P partialPerm(int n, int p, int * perm, string digits) {
   string part1;
   string part2;
   for(int i = 0; i < p; i++) {
@@ -59,18 +65,21 @@ int partialPerm(int n, int p, int * perm, string digits) {
   }
 
   if((p > 1 && part1[0] == '0') || (n - p > 1 && part2[0] == '0')) {
-    return MAX_N;
+    return P(0,MAX_N);
   }
-
-  int part1Int = stringToInt(part1);
-  int part2Int = stringToInt(part2);
-  return abs(part1Int - part2Int);
+  return P(stringToInt(part1), stringToInt(part2));
 }
 
 void processPerm(int n, tile * t) {
   /* printPerm(perm, n, digits); */
-  for(int i = 1; i < n; i ++) {
-    t->diff = min(t->diff, partialPerm(n, i, t->perm, t->digits));
+  int mid = n / 2;
+  for(int i = 1; i <= mid; i ++) { //只需要到中点就可以了，减少重复的配对
+    P parts = partialPerm(n, i, t->perm, t->digits);
+    int ndiff = abs(parts.first - parts.second);
+    if (ndiff < t->diff) {
+      t->diff = ndiff;
+      t->parts = parts;
+    }
   }
 }
 

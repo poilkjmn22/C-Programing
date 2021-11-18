@@ -14,6 +14,7 @@ using namespace std;
 
 int * removeItem(int *, int, int);
 void printArray(int *, int);
+int * getArr();
 
 int main() {
   array<int, 3> arr = {1,2,3};
@@ -21,6 +22,9 @@ int main() {
 
   int * arr2 = removeItem(arr.data(), arr.size(), 2);
   printArray(arr2, arr.size() - 1);
+
+  int * arr3 = getArr();
+  cout << "arr3: " << arr3[0] << ","  << *(arr3 + 1) << endl;
 
   return 0;
 }
@@ -41,5 +45,12 @@ int * removeItem(int * arr,int arrSize, int idx) {
       *(res+i - 1) = *(arr+i);
     }
   }
+  return res;
+}
+
+int * getArr() {
+  int *res = new int(2);
+  res[0] = 3;
+  res[1] = 4;
   return res;
 }
