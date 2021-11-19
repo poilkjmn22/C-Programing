@@ -3,7 +3,7 @@
  * @Date: 2021-11-13 22:54:49
  * @LastEditors: fangqi
  * @LastEditTime: 2021-11-13 22:54:49
- * @Description: POJ-1979
+ * @Description: POJ-1979 red and black
  * O(n) = N * M[ * 4]
  * @Copyright(c) 2021 CMIM Network Co.,Ltd. All Rights Reserve
  */
