@@ -31,8 +31,8 @@ struct tile {
   int CheeseMax;
   char tiles[MAX_N][MAX_M + 1];
   int d[MAX_N][MAX_M];
-  int power = 1;
-  int leastCostTime = 0;
+  int power;
+  int leastCostTime;
 };
 
 void solve(tile *);
@@ -158,6 +158,8 @@ tile * loadSampleInputs() {
       tileTmp->N = stringToInt(result[1]);
       tileTmp->M = stringToInt(result[2]);
       tileTmp->CheeseMax = stringToInt(result[3]);
+      tileTmp->power = 1;
+      tileTmp->leastCostTime = 0;
       N = 0;
     }
   }

@@ -2,6 +2,7 @@ tags
 
 #binary files
 *.out
+*.o
 
 # Editor
 *.swp

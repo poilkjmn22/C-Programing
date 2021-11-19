@@ -21,5 +21,11 @@ int main(void) {
   regex_match(s, result, patternCheese);
   cout << result[0] << endl;
 
+  regex patternRC("(\\d+)\\s(\\d+)");
+  match_results<string::const_iterator> result1;
+  string s1 = "2 5";
+  regex_match(s1, result1, patternRC);
+  cout << result1[1] << endl;
+
   return 0;
 }
