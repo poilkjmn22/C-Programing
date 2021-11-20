@@ -21,6 +21,7 @@ struct sample{
   int M;
   int jianbing[STRUCT_MAX_N][STRUCT_MAX_M + 1];
   int maxCountGood;
+  int execCount;
 };
 int sampleCount = 0;
 
@@ -79,6 +80,7 @@ sample * loadSampleInputs() {
       sampleTmp->N = nN;
       sampleTmp->M = nM;
       sampleTmp->maxCountGood = 0;
+      sampleTmp->execCount = 0;
       if(sampleTmp->N == 0) {
         delete sampleTmp;
       }
@@ -103,7 +105,7 @@ void printSampleInput(sample * s) {
 
 void printSampleOutput(sample * samp) {
   cout << "Output: "
-    << samp->maxCountGood << endl
+    << samp->maxCountGood << " ,exec count: " << samp->execCount << endl
     << endl;
 }
 
@@ -116,6 +118,7 @@ void dfs(int i, int j, sample * samp, bool isColumn) {
   if(i >= samp->N || j >= samp->M) {
     return ;
   }
+  samp->execCount += 1;
   dfs(i + 1, j, samp, 0);
   dfs(i, j + 1, samp, 1);
 

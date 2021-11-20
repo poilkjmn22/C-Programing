@@ -14,11 +14,10 @@
 #include <regex>
 #include <sstream>
 #include <queue>
+#include "utils.h"
 
 using namespace std;
 
-#define MAX_N 1000
-#define MAX_M 1000
 #define BARRIER 'X'
 #define PASS '.'
 #define START 'S'
@@ -29,8 +28,8 @@ struct tile {
   int N;
   int M;
   int CheeseMax;
-  char tiles[MAX_N][MAX_M + 1];
-  int d[MAX_N][MAX_M];
+  char tiles[STRUCT_MAX_N][STRUCT_MAX_M + 1];
+  int d[STRUCT_MAX_N][STRUCT_MAX_M];
   int power;
   int leastCostTime;
 };
@@ -40,7 +39,6 @@ P findStart(tile);
 void bfs(P, tile *);
 void normalizeTile(P, tile *);
 tile * loadSampleInputs();
-int stringToInt(string);
 void printTile(tile);
 string charToString(char);
 
@@ -167,14 +165,6 @@ tile * loadSampleInputs() {
   return tiles;
 }
 
-int stringToInt(string s) {
-  stringstream sm;
-  sm << s;
-  int m;
-  sm >> m;
-  return m;
-}
-
 P findStart(tile t) {
   P start;
 
@@ -201,8 +191,4 @@ void printTile(tile t) {
   return ;
 }
 
-string charToString(char ch) {
-  string s(1, ch );
-  return s;
-}
 
