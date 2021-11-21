@@ -128,7 +128,7 @@ void solve(tile * t) {
 
 tile * loadSampleInputs() {
   ifstream fin;
-  fin.open("./algorithms/bfs/sample-cheese.txt");
+  fin.open("./algorithms/bfs/sample/cheese.txt");
   string s;
   regex patternNum("(\\d+)[\\s\\t]+(\\d+)[\\s\\t]+(\\d+)");
   match_results<string::const_iterator> result;

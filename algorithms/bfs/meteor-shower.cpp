@@ -35,12 +35,12 @@ struct sample{
 int sampleCount = 0;
 
 void bfs(sample *);
-bool isSafe(meteor, sample *);
-bool canPass(meteor,int, int, sample *);
-sample * loadSampleInputs();
-void printSampleInput(sample *);
+bool is_safe(meteor, sample *);
+bool can_pass(meteor,int, int, sample *);
+sample * load_sample_inputs();
+void print_sample_input(sample *);
 void process_sample(sample *);
-void printSampleOutput(sample *);
+void print_sample_output(sample *);
 
 int direction[4][2] = {
   {0, -1},
@@ -50,11 +50,11 @@ int direction[4][2] = {
 };
 
 int main() {
-  sample * samples = loadSampleInputs();
+  sample * samples = load_sample_inputs();
   for(int i =0; i < sampleCount; i++) {
-    printSampleInput(samples + i);
+    print_sample_input(samples + i);
     process_sample(samples + i);
-    printSampleOutput(samples + i);
+    print_sample_output(samples + i);
   }
 
   return 0;
@@ -64,7 +64,7 @@ void process_sample(sample * samp) {
   bfs(samp);
 }
 
-void printSampleOutput(sample * samp) {
+void print_sample_output(sample * samp) {
   meteor p = samp->safePos;
   cout << "Output: "
     << p.time << "(" << p.x << ", " << p.y << ")" << endl
@@ -80,7 +80,7 @@ void bfs(sample * samp) {
     meteor p = que.front();
     que.pop();
 
-    if(isSafe(p, samp)) {
+    if(is_safe(p, samp)) {
       //找到了安全的位置
       samp->safePos = p;
       break;
@@ -90,7 +90,7 @@ void bfs(sample * samp) {
       int nx = p.x + direction[k][0];
       int ny = p.y + direction[k][1];
 
-      if(0 <= nx && nx <= MAX_X && 0 <= ny && ny <= MAX_Y && samp->t[nx][ny] == 0 && canPass(p, nx, ny, samp)) {
+      if(0 <= nx && nx <= MAX_X && 0 <= ny && ny <= MAX_Y && samp->t[nx][ny] == 0 && can_pass(p, nx, ny, samp)) {
         samp->t[nx][ny] = samp->t[p.x][p.y] + 1;
         meteor np = {nx, ny, samp->t[nx][ny]};
         que.push(np);
@@ -99,7 +99,7 @@ void bfs(sample * samp) {
   }
 }
 
-bool canPass(meteor p, int nx, int ny, sample * samp) {//新的移动位置（nx, ny）是否是安全能通过的
+bool can_pass(meteor p, int nx, int ny, sample * samp) {//新的移动位置（nx, ny）是否是安全能通过的
   bool res = true;
   meteor np = {nx, ny, samp->t[nx][ny]};
   int size = samp->meteor_size;
@@ -123,7 +123,7 @@ bool canPass(meteor p, int nx, int ny, sample * samp) {//新的移动位置（nx
   return res;
 }
 
-bool isSafe(meteor pos, sample * samp) {//陨石雨永远砸不到的地方是安全的
+bool is_safe(meteor pos, sample * samp) {//陨石雨永远砸不到的地方是安全的
   bool res = true;
   int size = samp->meteor_size;
   for(int i =0; i< size; i++) {
@@ -144,7 +144,7 @@ bool isSafe(meteor pos, sample * samp) {//陨石雨永远砸不到的地方是�
   return res;
 }
 
-sample * loadSampleInputs() {
+sample * load_sample_inputs() {
   ifstream fin;
   fin.open("./algorithms/bfs/sample/meteor-shower.txt");
 
@@ -184,7 +184,7 @@ sample * loadSampleInputs() {
   return samples;
 }
 
-void printSampleInput(sample * s) {
+void print_sample_input(sample * s) {
   cout << "Input: " << endl;
   cout << s->meteor_size << endl;
   for(int i = 0; i< s->meteor_size; i ++) {

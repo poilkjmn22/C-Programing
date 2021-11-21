@@ -21,12 +21,12 @@ int perm[MAX_N];
 
 int sample[7] = {1, 2,3, 4,5, 6, 7};
 
-int count = 0;
+int exec_count = 0;
 
 int main() {
   permutation1(0, 7);
 
-  cout << count << endl;
+  cout << exec_count << endl;
   return 0;
 }
 
@@ -34,7 +34,7 @@ int main() {
 void permutation1(int pos, int n) {
   if (pos == n) {
     printPerm(perm, n, sample);
-    count++;
+    exec_count++;
     return;
   }
   for(int i = 0; i < n; i++) {
