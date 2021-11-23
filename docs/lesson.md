@@ -8,3 +8,5 @@
 
 
 - 打开文件，文件不存在（比如文件名写错）的时候，不会报错，默默地什么都不做：没有很好地异常处理设计。。
+- Boost库的安装：Homebrew方式，Boost库要求c++11以上，所以g++ 命令需要加参数 -std=c++11
+- boost::regex, 捕获等：[https://www.boost.org/doc/libs/1_46_1/libs/regex/doc/html/boost_regex/captures.html]

@@ -6,7 +6,7 @@ BASE=./algorithms/${cate}
 OUT=${BASE}/out
 
 algo:
-	g++ -o ${OUT}/${prob}.o ${BASE}/${prob}.cpp
+	g++ -std=c++11 -o ${OUT}/${prob}.o ${BASE}/${prob}.cpp
 
 exec:
 	${OUT}/${prob}.o

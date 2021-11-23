@@ -1,11 +1,12 @@
-BASE=./base
-OUT=${BASE}/out
-OBJS=array.o
-SRCS=array.cpp
+_BASE=./base
+_OUT=${_BASE}/out
 
 base_cpp:
-	${CXX} -o ${OUT}/${OBJS} ${BASE}/${SRCS}
+	g++ -o ${_OUT}/${base}.o ${_BASE}/${base}.cpp
+
+base_exec:
+	${_OUT}/${base}.o
 
 clean:
-	rm -rf ${OUT}/*.o ${OUT}/*.out
+	rm -rf ${_OUT}/*.o ${_OUT}/*.out
 
