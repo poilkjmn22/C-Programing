@@ -15,6 +15,8 @@ using namespace std;
 int main() {
   cout << abs(5 - 7) << endl;
   cout << min(5 , 7) << endl;
+  cout << pow(2 , 20) << endl;
+  cout << log(1828) / log(2) << endl;
 
   return 0;
 }

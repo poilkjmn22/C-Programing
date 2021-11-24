@@ -11,10 +11,12 @@
 
 #include <sstream>
 #include <string>
+#include <cmath>
 
 int stringToInt(std::string);
 std::string charToString(char);
 int charToInt(char);
+int log_floor(int, int);
 
 #define MAX_N 100000000
 
@@ -62,6 +64,10 @@ void combination1(int pos, int n, int m, void (*process_comb)(int *, int)) {
       used[i] = false;
     }
   }
+}
+
+int log_floor(int m, int n) {
+  return log(n) / log(m);
 }
 
 #endif
