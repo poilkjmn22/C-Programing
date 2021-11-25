@@ -67,6 +67,7 @@ sample * load_sample_inputs() {
 
   sample * sampleTmp; 
   boost::regex patternRC("(\\d+):");
+  boost::regex patternCows("(?:(\\d+)(?:\\s|$))+");
   int N = -1;
   sample * samples = new sample[MAX_SAMPLE];
 
@@ -76,7 +77,6 @@ sample * load_sample_inputs() {
       continue;
     }
     boost::smatch result;
-    boost::regex patternCows("(?:(\\d+)(?:\\s|$))+");
     if(sampleTmp && N >= 0 && boost::regex_match(s, result, patternCows, boost::match_extra)) {
       for(int i = 1; i < result.size(); i++) {
         int c_size = result.captures(i).size();
