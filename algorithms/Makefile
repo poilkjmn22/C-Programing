@@ -8,7 +8,7 @@ OUT=${BASE}/out
 algo:
 	g++ -std=c++11 -o ${OUT}/${prob}.o ${BASE}/${prob}.cpp
 
-exec:
+exec_algo:
 	${OUT}/${prob}.o
 
 clean_algo:

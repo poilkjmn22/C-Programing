@@ -1,12 +1,12 @@
 _BASE=./base
 _OUT=${_BASE}/out
 
-base_cpp:
+cpp_base:
 	g++ -o ${_OUT}/${base}.o ${_BASE}/${base}.cpp
 
-base_exec:
+exec_base:
 	${_OUT}/${base}.o
 
-clean:
+clean_base:
 	rm -rf ${_OUT}/*.o ${_OUT}/*.out
 
