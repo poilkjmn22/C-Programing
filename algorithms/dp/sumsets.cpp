@@ -21,12 +21,13 @@ struct sample{
   int sum;
   int sumsets;
   int dp[STRUCT_MAX_N];
-  int merge;
+  int dp_merge[STRUCT_MAX_N + 1];
 };
 int sampleCount = 0;
 
 void dp(sample *);
-void merge(int, int, int, sample *);
+void dp_merge(sample *);
+/* void merge(int, int, int, sample *); */
 void dfs(int, int, sample *);
 sample * load_sample_inputs();
 void print_sample_input(sample *);
@@ -46,29 +47,47 @@ int main() {
 
 
 void dp(sample * samp) {
+  dp_merge(samp);
   samp->dp[0] = 1;
   for(int i = 2; i <= samp->sum; i+=2) {
-    merge(i / 4, 2, i, samp);
-    samp->dp[i] = samp->dp[i - 2] + samp->merge;
-    samp->merge = 0;
+    /* merge(i / 4, 2, i, samp); */
+    /* samp->dp[i] = samp->dp[i - 2] + samp->merge; */
+    /* samp->merge = 0; */
+    samp->dp[i] = samp->dp[i - 2] + samp->dp_merge[i / 2];
   }
   samp->sumsets = samp->dp[samp->sum % 2 == 1 ? (samp->sum - 1) : samp->sum];
 }
 
-void merge(int repeat_count, int log2, int sum, sample * samp){
-  if (log2 == 2) {
-    samp->merge++;
-  }
-  if (pow(2, log2) > sum) {
-    return;
-  }
-  for(int i = 1; i <= repeat_count; i++) {
-    samp->merge ++;
-    if (i >= 2) {//能向2的(log2 + 1)次幂合成
-      merge(i / 2, log2 + 1, sum, samp);
+// merge函数可以再更进一步进行动态规划的
+void dp_merge(sample * samp) {
+  int n_half = samp->sum / 2;
+  for(int i = 0; i <= n_half; i++) {
+    if (i < 2) {
+      samp->dp_merge[i] = 1;
+      continue;
     }
+    if (i % 2 == 1) {
+      samp->dp_merge[i] = samp->dp_merge[i - 1];
+      continue;
+    }
+    samp->dp_merge[i] = samp->dp_merge[i - 2] + samp->dp_merge[i / 2]; 
   }
 }
+
+/* void merge(int repeat_count, int log2, int sum, sample * samp){ */
+/*   if (log2 == 2) { */
+/*     samp->merge++; */
+/*   } */
+/*   if (pow(2, log2) > sum) { */
+/*     return; */
+/*   } */
+/*   for(int i = 1; i <= repeat_count; i++) { */
+/*     samp->merge ++; */
+/*     if (i >= 2) {//能向2的(log2 + 1)次幂合成 */
+/*       merge(i / 2, log2 + 1, sum, samp); */
+/*     } */
+/*   } */
+/* } */
 
 // repeat_count: 能合成的x的个数
 // log2: 上面的log2_x, 即x = pow(2, log2)
