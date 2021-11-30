@@ -5,6 +5,7 @@
  * @LastEditTime: 2021-11-24 09:26:34
  * @Description: POJ-2229
  * @O(N): 1 <= N <= 1,000,000 穷竭搜索法：pow(N, logN / 2)
+ * @此题目使用双重DP可以在O(N)的时间内解决，需要空间复杂度O(N);
  * @Copyright(c) 2021 CMIM Network Co.,Ltd. All Rights Reserve
  */
 
