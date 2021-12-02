@@ -19,6 +19,7 @@ int charToInt(char);
 int log_floor(int, int);
 
 #define MAX_N 100000000
+#define INF 2147483647
 
 #define STRUCT_MAX_N 1000
 #define STRUCT_MAX_M 1000
