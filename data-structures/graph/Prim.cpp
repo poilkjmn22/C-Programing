@@ -1,15 +1,16 @@
 /* 
  * @Author: fangqi
- * @Date: 2021-12-02 17:31:38
+ * @Date: 2021-12-03 10:33:12
  * @LastEditors: fangqi
- * @LastEditTime: 2021-12-02 17:31:38
- * @Description: 任意两点间的最短路问题（Floyd-Warshall 算法）
+ * @LastEditTime: 2021-12-03 10:33:12
+ * @Description: 最小生成树问题（Prim算法）
  * @Copyright(c) 2021 CMIM Network Co.,Ltd. All Rights Reserve
  */
 
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <queue>
 #include <string>
 #include <regex>
 #include "utils.h"
@@ -22,19 +23,22 @@ struct edge {
   int weight; // 权值
 };
 
-struct sample {
+struct sample{
   int V;
   vector<edge> G[STRUCT_MAX_N];
-  int d[STRUCT_MAX_N][STRUCT_MAX_N]; // 任意两点间的最短距离
-  int prev[STRUCT_MAX_N];
+  int min_cost;
+  bool in_tree[STRUCT_MAX_N]; // 该顶点是否已经在树中
+};
+
+struct comparison {
+  bool operator () (edge e1, edge e2) {
+    return e1.weight > e2.weight;
+  }
 };
 
 vector<sample> load_sample_inputs();
 void print_sample_input(sample *);
 void process_sample(sample *);
-void fill_INF(sample *);
-void fill_edge(sample *);
-void get_path(int, int, sample *);
 void print_sample_output(sample *);
 
 int main() {
@@ -44,58 +48,39 @@ int main() {
     sample * samp = &(*pd);
     print_sample_input(samp);
     process_sample(samp);
-    get_path(0, 4, samp);
     print_sample_output(samp);
   }
   return 0;
 }
 
 void process_sample(sample * samp) {
-  fill_INF(samp);
-  fill_edge(samp);
-  // 使用动态规划的思路
-  for(int k = 0; k < samp->V; k++) {
-    for(int i = 0; i < samp->V; i++) {
-        if (samp->d[i][k] == INF) { // 加法溢出，则丢弃掉
-          continue;
-        }
-      for(int j = 0; j < samp->V; j++) {
-        if (samp->d[k][j] == INF) { // 加法溢出，则丢弃掉
-          continue;
-        }
-        samp->d[i][j] = min(samp->d[i][j], samp->d[i][k] + samp->d[k][j]);
-      }
-    }
-  }
-}
+  priority_queue<edge, vector<edge>, comparison> pque;
 
-void fill_INF(sample * samp) {
-  for(int i = 0; i < samp->V; i++) {
-    for(int j = 0; j < samp->V; j++) {
-      samp->d[i][j] = INF;
-    }
-  }
-}
-
-void fill_edge(sample * samp) {
-  for(int i = 0; i < samp->V; i++) {
-    samp->d[i][i] = 0;
-
-    vector<edge> g = samp->G[i];
+  int s = 0;// 最开始选择一个顶点。
+  int count = samp->V;
+  samp->in_tree[s] = true;
+  while(count-- > 1){
+    vector<edge> g = samp->G[s];
     vector<edge>::iterator pd;
     for(pd = g.begin(); pd != g.end(); pd++) {
       edge e = *pd;
-      samp->d[i][e.to] = e.weight;
+      if (!samp->in_tree[e.to]) {
+        pque.push(e);
+      }
     }
-  }
-}
 
-void get_path(int s, int v, sample * samp) {
+    edge min_edge = pque.top();
+    pque.pop();
+    samp->min_cost += min_edge.weight;
+    s = min_edge.to;
+    samp->in_tree[s] = true;
+  }
+
 }
 
 vector<sample> load_sample_inputs() {
   ifstream fin;
-  fin.open("./data-structures/graph/sample/Bellman-Ford.txt");
+  fin.open("./data-structures/graph/sample/Prim.txt");
 
   sample * sampleTmp; 
   boost::regex patternRC("\\d");
@@ -168,21 +153,7 @@ void print_sample_input(sample * samp) {
 void print_sample_output(sample * samp) {
   cout << "Output: ";
   cout << endl;
-  for(int v = 0; v < samp->V; v++) {
-    if (v == 0) {
-      cout << "  ";
-    }
-    cout << v << " ";
-    if (v == samp->V - 1) {
-      cout << endl;
-    }
-  }
-  for(int v = 0; v < samp->V; v++) {
-    cout << v << " ";
-    for(int v1 = 0; v1 < samp->V; v1++) {
-      cout << samp->d[v1][v] << " ";
-    }
-    cout << endl;
-  }
+  cout << samp->min_cost << endl;
+  cout << endl;
 }
 

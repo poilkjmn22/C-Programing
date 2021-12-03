@@ -14,7 +14,7 @@ using namespace std;
 
 void printVector(vector<int>);
 vector<int> removeAt(vector<int>, int);
-void printVectorNest(vector<vector<int>>);
+/* void printVectorNest(vector<vector<int>>); */
 
 int main() {
   vector<int> vec;
@@ -40,7 +40,7 @@ int main() {
   vecA.push_back(vec);
   vecA.push_back(vec1);
   vecA.push_back(vec3);
-  printVectorNest(vecA);
+  /* printVectorNest(vecA); */
 
   return 0;
 }
@@ -51,18 +51,22 @@ void printVector(vector<int> vec) {
   /*   cout << *pd << ","; */
   /* } */
   /* cout << endl; */
+  for(int i = 0; i < vec.size(); i++) {
+    cout << vec[i] << ","; 
+  }
+  cout << endl;
 }
 
-void printVectorNest(vector<vector<int>> combs) {
-    vector<vector<int>>::iterator pd;
-    for(pd = combs.begin(); pd != combs.end(); pd++) {
-      vector<int>::iterator pd1;
-      for(pd1 = (*pd).begin(); pd1 != (*pd).end(); pd1++) {
-        cout << (*pd1) << ",";
-      }
-      cout << endl;
-    }
-}
+/* void printVectorNest(vector<vector<int>> combs) { */
+    /* vector<vector<int>>::iterator pd; */
+    /* for(pd = combs.begin(); pd != combs.end(); pd++) { */
+    /*   vector<int>::iterator pd1; */
+    /*   for(pd1 = (*pd).begin(); pd1 != (*pd).end(); pd1++) { */
+    /*     cout << (*pd1) << ","; */
+    /*   } */
+    /*   cout << endl; */
+    /* } */
+/* } */
 
 vector<int> removeAt(vector<int> arr, int idx) {
   vector<int> new_vec;

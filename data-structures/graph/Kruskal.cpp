@@ -1,9 +1,9 @@
 /* 
  * @Author: fangqi
- * @Date: 2021-12-02 17:31:38
+ * @Date: 2021-12-03 18:35:16
  * @LastEditors: fangqi
- * @LastEditTime: 2021-12-02 17:31:38
- * @Description: 任意两点间的最短路问题（Floyd-Warshall 算法）
+ * @LastEditTime: 2021-12-03 18:35:16
+ * @Description: 最小生成树问题（Kruskal算法）
  * @Copyright(c) 2021 CMIM Network Co.,Ltd. All Rights Reserve
  */
 
@@ -18,23 +18,74 @@
 using namespace std;
 
 struct edge {
+  int from; // 起点
   int to; // 终点
   int weight; // 权值
+
 };
 
-struct sample {
+bool comparison (edge e1, edge e2) {
+  return e1.weight < e2.weight;
+}
+bool is_edge_same (edge e1, edge e2) {
+  return e1.from == e2.to && e1.to == e2.from;
+}
+
+class DisjointSet {
+  public:
+    vector<int> rank, p;
+
+    DisjointSet() {}
+    DisjointSet(int size) {
+      rank.resize(size, 0);
+      p.resize(size, 0);
+      for(int i = 0; i < size; i++) {
+        make_set(i); 
+      }
+    }
+
+    void make_set(int x) {
+      p[x] = x;
+      rank[x] = 0;
+    }
+
+    bool same(int x, int y) {
+      return find_set(x) == find_set(y);
+    }
+
+    void unite(int x, int y) {
+      link(find_set(x), find_set(y));
+    }
+
+    void link(int x, int y) {
+      if (rank[x] > rank[y]) {
+        p[y] = x;
+      } else {
+        p[x] = y;
+        if (rank[x] == rank[y]) {
+          rank[y]++;
+        }
+      }
+    }
+
+    int find_set(int x) {
+      if (x != p[x]) {
+        p[x] = find_set(p[x]);
+      }
+      return p[x];
+    }
+};
+
+struct sample{
   int V;
-  vector<edge> G[STRUCT_MAX_N];
-  int d[STRUCT_MAX_N][STRUCT_MAX_N]; // 任意两点间的最短距离
-  int prev[STRUCT_MAX_N];
+  vector<edge> edges;
+  int min_cost;
 };
 
 vector<sample> load_sample_inputs();
+void sort_edges(sample *);
 void print_sample_input(sample *);
 void process_sample(sample *);
-void fill_INF(sample *);
-void fill_edge(sample *);
-void get_path(int, int, sample *);
 void print_sample_output(sample *);
 
 int main() {
@@ -44,58 +95,26 @@ int main() {
     sample * samp = &(*pd);
     print_sample_input(samp);
     process_sample(samp);
-    get_path(0, 4, samp);
     print_sample_output(samp);
   }
   return 0;
 }
 
 void process_sample(sample * samp) {
-  fill_INF(samp);
-  fill_edge(samp);
-  // 使用动态规划的思路
-  for(int k = 0; k < samp->V; k++) {
-    for(int i = 0; i < samp->V; i++) {
-        if (samp->d[i][k] == INF) { // 加法溢出，则丢弃掉
-          continue;
-        }
-      for(int j = 0; j < samp->V; j++) {
-        if (samp->d[k][j] == INF) { // 加法溢出，则丢弃掉
-          continue;
-        }
-        samp->d[i][j] = min(samp->d[i][j], samp->d[i][k] + samp->d[k][j]);
-      }
+  DisjointSet dset = DisjointSet(samp->V);
+
+  for(int i = 0; i < samp->edges.size(); i++) {
+    edge e = samp->edges[i];
+    if(!dset.same(e.from, e.to)) {
+      samp->min_cost += e.weight;
+      dset.unite(e.from, e.to);
     }
   }
-}
-
-void fill_INF(sample * samp) {
-  for(int i = 0; i < samp->V; i++) {
-    for(int j = 0; j < samp->V; j++) {
-      samp->d[i][j] = INF;
-    }
-  }
-}
-
-void fill_edge(sample * samp) {
-  for(int i = 0; i < samp->V; i++) {
-    samp->d[i][i] = 0;
-
-    vector<edge> g = samp->G[i];
-    vector<edge>::iterator pd;
-    for(pd = g.begin(); pd != g.end(); pd++) {
-      edge e = *pd;
-      samp->d[i][e.to] = e.weight;
-    }
-  }
-}
-
-void get_path(int s, int v, sample * samp) {
 }
 
 vector<sample> load_sample_inputs() {
   ifstream fin;
-  fin.open("./data-structures/graph/sample/Bellman-Ford.txt");
+  fin.open("./data-structures/graph/sample/Prim.txt");
 
   sample * sampleTmp; 
   boost::regex patternRC("\\d");
@@ -121,10 +140,11 @@ vector<sample> load_sample_inputs() {
           }else if (j > 1) {
             if (!( j % 2 )) {
               e = new edge;
+              e->from = v;
               e->to = num;
             } else {
               e->weight = num;
-              sampleTmp->G[v].push_back(*e);
+              sampleTmp->edges.push_back(*e);
               delete e;
             }
           }
@@ -133,6 +153,7 @@ vector<sample> load_sample_inputs() {
 
       if (N++ == (sampleTmp->V - 1)) {
         N = -1;
+        sort_edges(sampleTmp);
         samples.push_back(*sampleTmp);
         delete sampleTmp;
       }
@@ -149,40 +170,26 @@ vector<sample> load_sample_inputs() {
   return samples;
 }
 
+void sort_edges(sample * samp) {
+  sort(samp->edges.begin(), samp->edges.end(), comparison);
+  vector<edge>::iterator it = unique(samp->edges.begin(), samp->edges.end(), is_edge_same);
+  samp->edges.resize(distance(samp->edges.begin(), it));
+}
+
 void print_sample_input(sample * samp) {
   cout << "Input: " << endl << samp->V << endl;
-  for(int i = 0; i < samp->V; i++) {
-    vector<edge> g = samp->G[i];
-    cout << i << " " << g.size() << " ";
-      vector<edge>::iterator pd;
-      for(pd = g.begin(); pd != g.end(); pd++) {
-        cout << (*pd).to << " " << (*pd).weight;
-        if (pd != g.end()) {
-          cout << " ";
-        }
-      }
-    cout << endl;
+  vector<edge> g = samp->edges;
+  vector<edge>::iterator pd;
+  for(pd = g.begin(); pd != g.end(); pd++) {
+    edge e = *pd;
+    cout << e.from << " " << e.to << " " << e.weight << endl;
   }
 }
 
 void print_sample_output(sample * samp) {
   cout << "Output: ";
   cout << endl;
-  for(int v = 0; v < samp->V; v++) {
-    if (v == 0) {
-      cout << "  ";
-    }
-    cout << v << " ";
-    if (v == samp->V - 1) {
-      cout << endl;
-    }
-  }
-  for(int v = 0; v < samp->V; v++) {
-    cout << v << " ";
-    for(int v1 = 0; v1 < samp->V; v1++) {
-      cout << samp->d[v1][v] << " ";
-    }
-    cout << endl;
-  }
+  cout << samp->min_cost << endl;
+  cout << endl;
 }
 

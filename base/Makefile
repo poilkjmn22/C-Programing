@@ -2,7 +2,7 @@ _BASE=./base
 _OUT=${_BASE}/out
 
 cpp_base:
-	g++ -o ${_OUT}/${base}.o ${_BASE}/${base}.cpp
+	g++ -std=c++11 -o ${_OUT}/${base}.o ${_BASE}/${base}.cpp
 
 exec_base:
 	${_OUT}/${base}.o
