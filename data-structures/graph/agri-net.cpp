@@ -1,9 +1,9 @@
 /* 
  * @Author: fangqi
- * @Date: 2021-12-03 10:33:12
+ * @Date: 2021-12-04 16:49:47
  * @LastEditors: fangqi
- * @LastEditTime: 2021-12-03 10:33:12
- * @Description: 最小生成树问题（Prim算法）
+ * @LastEditTime: 2021-12-04 16:49:47
+ * @Description: POJ-1258
  * @Copyright(c) 2021 CMIM Network Co.,Ltd. All Rights Reserve
  */
 
@@ -19,13 +19,14 @@
 using namespace std;
 
 struct edge {
+  int from;
   int to; // 终点
   int weight; // 权值
 };
 
 struct sample{
   int V;
-  vector<edge> G[STRUCT_MAX_N];
+  int G[STRUCT_MAX_N][STRUCT_MAX_M];
   int min_cost;
   bool in_tree[STRUCT_MAX_N]; // 该顶点是否已经在树中
 };
@@ -60,17 +61,15 @@ void process_sample(sample * samp) {
   int count = samp->V;
   samp->in_tree[s] = true;
   while(count-- > 1){
-    vector<edge> g = samp->G[s];
-    vector<edge>::iterator pd;
-    for(pd = g.begin(); pd != g.end(); pd++) {
-      edge e = *pd;
-      if (!samp->in_tree[e.to]) {
+    for(int i = 0; i < samp->V; i++) {
+      if (!samp->in_tree[i]) {
+        edge e = {s, i, samp->G[s][i]};
         pque.push(e);
       }
     }
 
     edge min_edge;
-    while(!pque.empty()) { // 之前的添加的边中也有可能是最短的，但是却有可能形成环（也就是并没有删掉队列中能形成环的边）
+    while(!pque.empty()) {
       min_edge = pque.top();
       pque.pop();
       if (!samp->in_tree[min_edge.to]) {
@@ -86,7 +85,7 @@ void process_sample(sample * samp) {
 
 vector<sample> load_sample_inputs() {
   ifstream fin;
-  fin.open("./data-structures/graph/sample/Prim.txt");
+  fin.open("./data-structures/graph/sample/agri-net.txt");
 
   sample * sampleTmp; 
   boost::regex patternRC("\\d");
@@ -103,22 +102,8 @@ vector<sample> load_sample_inputs() {
     if (sampleTmp && N >= 0 && boost::regex_match(s, result, pattern_edges, boost::match_extra)) {
       for(int i = 1; i < result.size(); i++) {
         int c_size = result.captures(i).size();
-        int v;
-        edge * e;
         for(int j = 0; j < c_size; ++j) {
-          int num = stringToInt(result.captures(i)[j]);
-          if (j == 0) {
-            v = num;
-          }else if (j > 1) {
-            if (!( j % 2 )) {
-              e = new edge;
-              e->to = num;
-            } else {
-              e->weight = num;
-              sampleTmp->G[v].push_back(*e);
-              delete e;
-            }
-          }
+          sampleTmp->G[N][j] = stringToInt(result.captures(i)[j]);
         }
       }
 
@@ -143,15 +128,12 @@ vector<sample> load_sample_inputs() {
 void print_sample_input(sample * samp) {
   cout << "Input: " << endl << samp->V << endl;
   for(int i = 0; i < samp->V; i++) {
-    vector<edge> g = samp->G[i];
-    cout << i << " " << g.size() << " ";
-      vector<edge>::iterator pd;
-      for(pd = g.begin(); pd != g.end(); pd++) {
-        cout << (*pd).to << " " << (*pd).weight;
-        if (pd != g.end()) {
-          cout << " ";
-        }
+    for(int j = 0; j < samp->V; j++) {
+      cout << samp->G[i][j];
+      if (j < samp->V - 1) {
+        cout << " ";
       }
+    }
     cout << endl;
   }
 }
