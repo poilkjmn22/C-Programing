@@ -36,6 +36,10 @@ int main() {
   vector<int> vec3 = {4,5,6};
   printVector(vec3);
 
+  vector<int> * vec4 = new vector<int>;
+  vec4->push_back(1000);
+  printVector(*vec4);
+
   vector<vector<int>> vecA;
   vecA.push_back(vec);
   vecA.push_back(vec1);
