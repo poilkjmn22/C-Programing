@@ -17,6 +17,8 @@ int stringToInt(std::string);
 std::string charToString(char);
 int charToInt(char);
 int log_floor(int, int);
+double setprecision(double, int);
+double setfixed(double, int);
 
 #define MAX_N 100000000
 #define INF 2147483647
@@ -69,6 +71,18 @@ void combination1(int pos, int n, int m, void (*process_comb)(int *, int)) {
 
 int log_floor(int m, int n) {
   return log(n) / log(m);
+}
+
+double setprecision(double f, int p) {
+  return floor(f * pow(10, p) + 0.5) / pow(10, p);
+}
+
+double setfixed(double f, int p) {
+  std::stringstream ss;
+  ss.setf(std::ios::fixed);
+  ss.precision(p);
+  ss << f;
+  return atof(ss.str().c_str());
 }
 
 #endif
