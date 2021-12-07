@@ -98,33 +98,25 @@ int main() {
 }
 
 void process_sample(sample * samp) {
-  DisjointSet dset = DisjointSet(samp->n + 1);
+  DisjointSet dset_same = DisjointSet(samp->n + 1);
+  DisjointSet dset_diff = DisjointSet(samp->n + 1);
 
   for(int i = 0; i < samp->M; i++) {
     message m = samp->messages[i];
     if (m.type == "D") {
-      if (samp->d[m.c1] == 0 && samp->d[m.c2] == 0) {
-        samp->d[m.c1] = m.c2;
-        samp->d[m.c2] = m.c1;
-      } else {
-        if (samp->d[m.c1] != 0) {
-          dset.unite(m.c2, samp->d[m.c1]);
-        }
-        if (samp->d[m.c2] != 0) {
-          dset.unite(m.c1, samp->d[m.c2]);
-        }
-        if (samp->d[m.c1] != 0 && samp->d[m.c2] != 0) {
-          samp->d[m.c1] = m.c2;
-        } else if (samp->d[m.c1] == 0) {
-          samp->d[m.c1] = m.c2;
-        } else if (samp->d[m.c2] == 0) {
-          samp->d[m.c2] = m.c1;
-        }
+      if (samp->d[m.c1] != 0) {
+        dset_same.unite(m.c2, samp->d[m.c1]);
       }
+      if (samp->d[m.c2] != 0) {
+        dset_same.unite(m.c1, samp->d[m.c2]);
+      }
+      samp->d[m.c1] = m.c2;
+      samp->d[m.c2] = m.c1;
+      dset_diff.unite(m.c1, m.c2);
     } else {
-      if (dset.same(m.c1, m.c2)) {
+      if (dset_same.same(m.c1, m.c2)) {
         samp->res.push_back(SAME_GANG);
-      } else if (samp->d[m.c1] == m.c2 || samp->d[m.c2] == m.c1) {
+      } else if (dset_diff.same(m.c1, m.c2)) {
         samp->res.push_back(DIFF_GANG);
       } else {
         samp->res.push_back(NOT_SURE);
