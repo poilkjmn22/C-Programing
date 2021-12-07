@@ -123,7 +123,7 @@ vector<sample> load_sample_inputs() {
 
   sample * sampleTmp; 
   boost::regex patternRC("(\\d+)\\s(\\d+)");
-  boost::regex pattern_pile("(-?\\d+)\\s(\\d+)");
+  boost::regex pattern_pile("(-?\\d+)\\s(-?\\d+)");
   boost::regex pattern_fence("(\\d+)\\s(\\d+)");
   vector<sample> samples;
   int N = -1;
