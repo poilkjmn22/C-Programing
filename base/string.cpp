@@ -32,6 +32,8 @@ int main() {
   cout << (' ' == s[1]) << endl;
   s.erase(s.length() - 1);
   s += "ef";
+  char ch2 = s[2];
+  cout << ch2 << endl;
   s = "";
   cout << s << endl;
 
