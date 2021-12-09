@@ -28,7 +28,15 @@ int main() {
   eachString("sdfshgsgsh");
 
   string s = "a bc";
+  s += 'd';
   cout << (' ' == s[1]) << endl;
+  s.erase(s.length() - 1);
+  s += "ef";
+  s = "";
+  cout << s << endl;
+
+  cout << stringToInt("000201") << endl;
+  cout << atoi("000201") << endl;
   return 0;
 }
 
