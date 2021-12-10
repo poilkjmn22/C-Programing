@@ -9,6 +9,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -34,6 +35,10 @@ int main() {
   s += "ef";
   char ch2 = s[2];
   cout << ch2 << endl;
+
+  string s2 = s;
+  reverse(s2.begin(), s2.end());
+  cout << s2 << endl;
   s = "";
   cout << s << endl;
 
