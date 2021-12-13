@@ -3,7 +3,7 @@
  * @Date: 2021-12-11 16:41:02
  * @LastEditors: fangqi
  * @LastEditTime: 2021-12-11 16:41:02
- * @Description: 有根树的表达。
+ * @Description: 有根树的表达。<使用左子右兄弟表达法>
  * @Copyright(c) 2021 CMIM Network Co.,Ltd. All Rights Reserve
  */
 
