@@ -72,9 +72,9 @@ void process_sample(sample * samp) {
     calve c = pque.top();
     pque.pop();
 
-    samp->admit_calves[admit_count] = c;
+    samp->admit_calves[admit_count++] = c;
     samp->used_fin += c.fin_aid;
-    if (admit_count++ == (samp->N - 1)) {
+    if (admit_count == samp->N) {
       break;
     }
   }
