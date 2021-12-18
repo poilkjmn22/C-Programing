@@ -62,6 +62,14 @@ void process_sample(sample * samp) {
 
     set<int> nprices = samp->prices;
     for(int k = 1; k <= c; k++) {
+      int nv = v * k;
+      if (nv > samp->m) {
+        overm = true;
+        break;
+      } else {
+        nprices.insert(nv);
+      }
+
       for(set<int>::iterator it = samp->prices.begin(); it != samp->prices.end(); it++) {
         int nv = *it + (v * k);
         if (nv > samp->m) {
@@ -70,16 +78,6 @@ void process_sample(sample * samp) {
         } else {
           nprices.insert(nv);
         }
-      }
-    }
-
-    for(int k = 1; k <= c; k++) {
-      int nv = v * k;
-      if (nv > samp->m) {
-        overm = true;
-        break;
-      } else {
-        nprices.insert(nv);
       }
     }
 
