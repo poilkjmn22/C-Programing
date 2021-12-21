@@ -58,7 +58,6 @@ void process_sample(sample * samp) {
     coin cc = samp->coins[i];
     int v = cc.first;
     int c = cc.second;
-    int k = 1;
 
     set<int> nprices = samp->prices;
     for(int k = 1; k <= c; k++) {
