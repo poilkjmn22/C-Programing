@@ -60,27 +60,17 @@ void init_dp(sample * samp) {
 }
 
 void dp(sample * samp){
-  init_dp(samp);
+  /* init_dp(samp); */
 
-  for(int k = 2; k <= samp->K; k++) {
-    // 1,2, ..., k - 1 容易漏掉
-    for(int i = 1; i < k; i++) {
-      samp->dp[i][k] = samp->dp[i][i];
-    }
-    int seg = 0;
-    int dn = 0;
-    bool overflow = false;
-    while(!overflow) {
-      for(int m = 0; m < k; m++) {
-        dn = m + k * seg;
-        if ((dn + k) > samp->N) {
-          overflow = true;
-          break;
-        }
-        /* cout << dn + k << ":" << k << "; "; */
-        samp->dp[dn + k][k] = samp->dp[dn + k][k - 1] + (dn == 0 ? 1 : samp->dp[dn][k]); // dn == 0时，需要特别处理一下
+  for(int k = 1; k <= samp->K; k++) {
+    for(int n = 1; n <= samp->N; n++) {
+      if (n < k) {
+        samp->dp[n][k] = samp->dp[n][n];
+      } else if (n == k) {
+        samp->dp[n][k] = samp->dp[n][k - 1] + 1; // dn == 0时，需要特别处理一下
+      } else {
+        samp->dp[n][k] = samp->dp[n][k - 1] + samp->dp[n - k][k];
       }
-      seg++;
     }
   }
 
