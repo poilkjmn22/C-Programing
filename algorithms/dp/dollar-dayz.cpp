@@ -67,16 +67,20 @@ void dp(sample * samp){
     for(int i = 1; i < k; i++) {
       samp->dp[i][k] = samp->dp[i][i];
     }
-    int seg = ceil(samp->N / k);
-    for(int m = 0; m < k; m++) {
-      for(int n = 0; n < seg; n++) {
-        int dn = n + m * seg;
+    int seg = 0;
+    int dn = 0;
+    bool overflow = false;
+    while(!overflow) {
+      for(int m = 0; m < k; m++) {
+        dn = m + k * seg;
         if ((dn + k) > samp->N) {
+          overflow = true;
           break;
         }
         /* cout << dn + k << ":" << k << "; "; */
         samp->dp[dn + k][k] = samp->dp[dn + k][k - 1] + (dn == 0 ? 1 : samp->dp[dn][k]); // dn == 0时，需要特别处理一下
       }
+      seg++;
     }
   }
 
