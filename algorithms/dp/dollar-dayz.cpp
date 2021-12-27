@@ -62,8 +62,8 @@ void init_dp(sample * samp) {
 void dp(sample * samp){
   /* init_dp(samp); */
 
-  for(int k = 1; k <= samp->K; k++) {
-    for(int n = 1; n <= samp->N; n++) {
+  for(int n = 1; n <= samp->N; n++) {
+    for(int k = 1; k <= samp->K; k++) {
       if (n < k) {
         samp->dp[n][k] = samp->dp[n][n];
       } else if (n == k) {
