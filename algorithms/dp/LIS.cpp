@@ -23,10 +23,14 @@ struct sample{
   int L;
   int LIS[STRUCT_MAX_N];
   int dist[STRUCT_MAX_N];
+  vector<int> path;
 };
 int sampleCount = 0;
 
 void dp(sample *);
+void dp2(sample *);
+void fill(sample *, int);
+void get_path(sample *);
 void dfs(sample *);
 sample * load_sample_inputs();
 void print_sample_input(sample *);
@@ -54,6 +58,29 @@ void dp(sample * samp) {
       }
     }
     samp->L = max(samp->L, samp->LIS[i]);
+  }
+}
+
+// LIS[i - 1] 定义为长度为i的最长递增子序列的最后一个元素
+void dp2(sample * samp) {
+  fill(samp, MAX_N);
+  for(int i = 0; i < samp->count; i++) {
+    *lower_bound(samp->LIS, samp->LIS + i, samp->src[i]) = samp->src[i];
+  }
+  samp->L = lower_bound(samp->LIS, samp->LIS + samp->count - 1, MAX_N) - samp->LIS;
+
+  get_path(samp);
+}
+
+void fill(sample * samp, int v) {
+  for(int i = 0; i < samp->count; i++) {
+    samp->LIS[i] = v;
+  }
+}
+
+void get_path(sample * samp) {
+  for(int i = 0; i < samp->L; i++) {
+    samp->path.push_back(samp->LIS[i]); 
   }
 }
 
@@ -86,7 +113,8 @@ void process_sample(sample * samp) {
   /*     break; */
   /*   } */
   /* } */
-  dp(samp);
+  /* dp(samp); */
+  dp2(samp);
 }
 
 sample * load_sample_inputs() {
@@ -132,14 +160,10 @@ void print_sample_input(sample * samp) {
 void print_sample_output(sample * samp) {
   cout << "Output: "
     << samp->L << endl;
-    /* << " ("; */
-
-  /* for(int i = 0; i < samp->L; i++) { */
-  /*   cout << samp->dist[i]; */
-  /*   if (i < samp->L - 1) { */
-  /*     cout << ", "; */
-  /*   } */
+  /* cout << "path: "; */
+  /* for(int i = 0; i < samp->path.size(); i++) { */
+  /*   cout << samp->path[i] << " "; */
   /* } */
-  /* cout << ")" << endl; */
+  /* cout << endl; */
 }
 
