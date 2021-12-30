@@ -65,6 +65,7 @@ void process_sample(sample * samp) {
   samp->max_min_distance = lb;
 }
 
+// 移除m个石头后，能使最短距离不小于d
 bool condition(int d, sample * samp) {
   int removed = 0;
   int prev = 0;
